@@ -1,11 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const date = require(__dirname + "/date.js");
 
 
 const app = express();
 
-let items = [];
-let workItems = [];
+const items = [];
+const workItems = [];
 
 app.set('view engine', 'ejs');
 
@@ -15,16 +16,8 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  let today = new Date();
 
-  let options = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  };
-
-
-  let day = today.toLocaleDateString("en-US", options);
+  const day = date.getDate();
 
   //renders file called list, then looks for variable name kindOfDay and replaces it with value of day
   res.render('list', {
@@ -37,7 +30,7 @@ app.get("/", (req, res) => {
 //catches the post request of button click
 app.post("/", (req, res) => {
 
-  let item = req.body.newItem;
+  const item = req.body.newItem;
 
   if (req.body.list === "Work") {
     workItems.push(item);
